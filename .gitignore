@@ -1,0 +1,83 @@
+# =========================
+# Node / React
+# =========================
+node_modules/
+dist/
+build/
+.vite/
+
+# =========================
+# Environment Variables
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+.venv/
+venv/
+env/
+
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# =========================
+# FastAPI / Uvicorn
+# =========================
+*.log
+
+# =========================
+# Database / Local Files
+# =========================
+*.db
+*.sqlite
+*.sqlite3
+
+# =========================
+# Generated Files
+# =========================
+uploads/
+generated/
+tickets/
+qr/
+
+# =========================
+# Coverage
+# =========================
+.coverage
+htmlcov/
+coverage/
+
+# =========================
+# IDE
+# =========================
+.vscode/
+!.vscode/extensions.json
+
+.idea/
+
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+# TypeScript
+# =========================
+*.tsbuildinfo
+
+# =========================
+# Temporary
+# =========================
+tmp/
+temp/
