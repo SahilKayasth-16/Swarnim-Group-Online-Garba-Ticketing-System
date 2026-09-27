@@ -1,0 +1,68 @@
+/* LOADING SKELETON WITH CSS SHIMMER/PULSE */
+.skeleton-card {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2.75rem 2rem;
+  background-color: rgba(15, 23, 42, 0.92);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: 28px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  align-items: center;
+}
+
+.skeleton-shimmer-box {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.skeleton-line-title {
+  height: 28px;
+  background: linear-gradient(90deg, #1e293b 0%, #334155 50%, #1e293b 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+  width: 65%;
+}
+
+.skeleton-line-sub {
+  height: 16px;
+  background: linear-gradient(90deg, #1e293b 0%, #334155 50%, #1e293b 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 6px;
+  width: 85%;
+}
+
+.skeleton-block-main {
+  height: 140px;
+  background: linear-gradient(90deg, #020617 0%, #1e293b 50%, #020617 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: 18px;
+  width: 100%;
+}
+
+.skeleton-msg {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #fbbf24;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

@@ -1,22 +1,25 @@
-import { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Navbar } from "./components/Navbar";
-import { EventDetailPage } from "./pages/EventDetailPage";
-import { EventsPage } from "./pages/EventsPage";
+import { Toast } from "./components/Toast";
+import { LoadingSkeleton } from "./components/LoadingSkeleton";
+import type { ToastMessage } from "./types";
+import "./styles/global.css";
+
+const HomePage = React.lazy(() => import("./pages/HomePage").then(m => ({ default: m.HomePage })));
+const BookingPage = React.lazy(() => import("./pages/BookingPage").then(m => ({ default: m.BookingPage })));
 
 export function App() {
-  const [selectedEventId, setSelectedEventId] = useState<number | null>(null);
+  const [currentRoute, setCurrentRoute] = useState<"home" | "book">("home");
+  const [activeToast, setActiveToast] = useState<ToastMessage | null>(null);
 
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash;
-      if (hash.startsWith("#event-")) {
-        const id = parseInt(hash.replace("#event-", ""), 10);
-        if (!isNaN(id)) {
-          setSelectedEventId(id);
-          return;
-        }
+      if (hash === "#book" || hash.startsWith("#book")) {
+        setCurrentRoute("book");
+      } else {
+        setCurrentRoute("home");
       }
-      setSelectedEventId(null);
     };
 
     handleHashChange();
@@ -24,39 +27,53 @@ export function App() {
     return () => window.removeEventListener("hashchange", handleHashChange);
   }, []);
 
-  const handleSelectEvent = (id: number) => {
-    setSelectedEventId(id);
-    window.location.hash = `#event-${id}`;
-  };
-
   const handleNavigateHome = () => {
-    setSelectedEventId(null);
+    setCurrentRoute("home");
     window.location.hash = "";
   };
 
-  return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col">
-      <Navbar onNavigateHome={handleNavigateHome} />
+  const handleNavigateBooking = () => {
+    setCurrentRoute("book");
+    window.location.hash = "#book";
+  };
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
-        {selectedEventId ? (
-          <EventDetailPage
-            eventId={selectedEventId}
-            onBack={handleNavigateHome}
-          />
-        ) : (
-          <EventsPage onSelectEvent={handleSelectEvent} />
-        )}
+  const handleShowToast = (toast: ToastMessage) => {
+    setActiveToast(toast);
+    setTimeout(() => {
+      setActiveToast(null);
+    }, 4000);
+  };
+
+  return (
+    <div className="app-layout">
+      <Navbar onNavigateHome={handleNavigateHome} onNavigateBooking={handleNavigateBooking} />
+
+      <main className="main-content">
+        <Suspense fallback={<LoadingSkeleton />}>
+          {currentRoute === "book" ? (
+            <BookingPage
+              onShowToast={handleShowToast}
+              onGoHome={handleNavigateHome}
+            />
+          ) : (
+            <HomePage onGoToBooking={handleNavigateBooking} />
+          )}
+        </Suspense>
       </main>
 
-      <footer className="bg-slate-900 text-slate-400 border-t border-slate-800 py-6 text-center text-xs">
-        <div className="max-w-7xl mx-auto px-4">
-          <p className="font-semibold text-slate-300 mb-1">
-            Swarnim Group Online Garba Ticketing System
+      <footer className="app-footer">
+        <div>
+          <p className="app-footer-title">
+            SWARNIM GROUP NAVRATRI MAHOTSAV 2026
           </p>
-          <p>© 2026 Swarnim Group. All rights reserved. Powered by FastAPI & PostgreSQL.</p>
+          <p>P.R.B Arts & P.G.R Commerce College Ground, Station Road, Bardoli, Surat</p>
+          <p style={{ marginTop: '0.35rem', fontSize: '0.75rem', opacity: 0.7 }}>
+            © 2026 Swarnim Group Navratri Mahotsav. All rights reserved. Developed by Sahil Kayasth.
+          </p>
         </div>
       </footer>
+
+      <Toast toast={activeToast} onClose={() => setActiveToast(null)} />
     </div>
   );
 }

@@ -1,9 +1,11 @@
 from fastapi import APIRouter
+from app.api.routes.bookings import router as bookings_router
 from app.api.routes.events import router as events_router
 from app.api.routes.health import router as health_router
 
 api_router = APIRouter()
 api_router.include_router(health_router, tags=["Health"])
 api_router.include_router(events_router, prefix="/events", tags=["Events"])
+api_router.include_router(bookings_router, prefix="/bookings", tags=["Bookings"])
 
 __all__ = ["api_router"]

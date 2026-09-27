@@ -1,28 +1,18 @@
 import React from "react";
+import "../styles/legacycomponents.css";
 
 interface ErrorMessageProps {
-  title?: string;
   message: string;
   onRetry?: () => void;
 }
 
-export const ErrorMessage: React.FC<ErrorMessageProps> = ({
-  title = "Unable to load events. Please try again.",
-  message,
-  onRetry,
-}) => {
+export const ErrorMessage: React.FC<ErrorMessageProps> = ({ message, onRetry }) => {
   return (
-    <div className="max-w-xl mx-auto my-8 p-6 bg-rose-50 border border-rose-200 rounded-xl text-center shadow-sm">
-      <div className="w-12 h-12 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center mx-auto mb-3 text-xl font-bold">
-        ⚠️
-      </div>
-      <h3 className="text-lg font-bold text-rose-800 mb-1">{title}</h3>
-      <p className="text-sm text-rose-600 mb-4">{message}</p>
+    <div className="error-card-box">
+      <h4 className="error-title-text">Error</h4>
+      <p className="error-desc-text">{message}</p>
       {onRetry && (
-        <button
-          onClick={onRetry}
-          className="px-4 py-2 bg-rose-600 text-white rounded-lg font-semibold hover:bg-rose-700 transition-colors shadow-sm"
-        >
+        <button onClick={onRetry} className="back-btn" style={{ marginTop: '1rem' }}>
           Try Again
         </button>
       )}

@@ -1,4 +1,4 @@
-import type { ApiResponse, Event, TicketType } from "../types";
+import type { ApiResponse, DemoBookingData, DemoBookingRequest, Event, TicketType } from "../types";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
 
@@ -42,4 +42,29 @@ export async function getEventTickets(eventId: number): Promise<TicketType[]> {
     throw new Error(result.message || "Failed to retrieve ticket categories");
   }
   return result.data;
+}
+
+export async function createDemoBooking(payload: DemoBookingRequest): Promise<DemoBookingData> {
+  const response = await fetch(`${API_BASE_URL}/bookings/demo`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.detail || "Payment failed. Please try again.");
+  }
+
+  const result: ApiResponse<DemoBookingData> = await response.json();
+  if (!result.success) {
+    throw new Error(result.message || "Demo booking payment failed.");
+  }
+  return result.data;
+}
+
+export function getDemoTicketPdfUrl(bookingId: string): string {
+  return `${API_BASE_URL}/bookings/demo/${bookingId}/ticket.pdf`;
 }

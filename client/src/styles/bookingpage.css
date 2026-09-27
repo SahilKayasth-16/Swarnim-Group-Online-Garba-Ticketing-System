@@ -1,0 +1,48 @@
+/* BOOKING PAGE STYLES */
+.booking-page-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+.booking-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.15rem;
+  border-radius: 12px;
+  background-color: #0f172a;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  color: #fef3c7;
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.back-btn:hover {
+  background-color: #1e293b;
+  transform: translateX(-2px);
+}
+
+.booking-trust-note {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+@media (max-width: 640px) {
+  .booking-trust-note {
+    display: none;
+  }
+}

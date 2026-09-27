@@ -23,8 +23,34 @@ export interface Event {
   ticket_types?: TicketType[];
 }
 
+export interface DemoBookingRequest {
+  quantity: number;
+  event_date: string;
+  payment_method: string;
+  event_id?: number;
+}
+
+export interface DemoBookingData {
+  booking_id: string;
+  event_name: string;
+  venue: string;
+  event_date: string;
+  quantity: number;
+  ticket_price: number;
+  total_amount: number;
+  payment_method: string;
+  payment_status: string;
+}
+
 export interface ApiResponse<T> {
   success: boolean;
-  data: T;
   message?: string;
+  data: T;
+}
+
+export interface ToastMessage {
+  id: string;
+  type: "success" | "error" | "info";
+  title?: string;
+  message: string;
 }
