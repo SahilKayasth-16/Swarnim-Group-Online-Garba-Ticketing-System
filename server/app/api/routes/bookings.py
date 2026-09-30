@@ -1,4 +1,7 @@
-from fastapi import APIRouter, HTTPException, status, Response
+from fastapi import APIRouter, Depends, HTTPException, status, Response
+from sqlalchemy.orm import Session
+
+from app.core.dependencies import get_db
 from app.schemas.booking import DemoBookingCreate, DemoBookingResponse
 from app.services import booking_service
 from app.utils.pdf_generator import generate_ticket_pdf
@@ -7,12 +10,13 @@ router = APIRouter()
 
 
 @router.post("/demo", response_model=DemoBookingResponse)
-def create_demo_booking_route(payload: DemoBookingCreate):
+def create_demo_booking_route(payload: DemoBookingCreate, db: Session = Depends(get_db)):
     """
-    Simulates a demo ticket booking payment and returns booking summary.
+    Simulates a demo ticket booking payment, persists it, and returns the booking summary.
     """
     try:
         booking_data = booking_service.create_demo_booking(
+            db=db,
             quantity=payload.quantity,
             event_date=payload.event_date,
             payment_method=payload.payment_method,
@@ -27,7 +31,7 @@ def create_demo_booking_route(payload: DemoBookingCreate):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(val_err),
         )
-    except Exception as exc:
+    except Exception:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="An unexpected error occurred during demo payment processing.",
@@ -35,11 +39,11 @@ def create_demo_booking_route(payload: DemoBookingCreate):
 
 
 @router.get("/demo/{booking_id}/ticket.pdf")
-def download_demo_ticket_pdf(booking_id: str):
+def download_demo_ticket_pdf(booking_id: str, db: Session = Depends(get_db)):
     """
-    Generates and streams a downloadable PDF ticket for the demo booking.
+    Generates and streams a downloadable PDF ticket for a persisted demo booking.
     """
-    booking = booking_service.get_demo_booking_by_id(booking_id)
+    booking = booking_service.get_demo_booking_by_id(db, booking_id)
     if not booking:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -52,11 +56,9 @@ def download_demo_ticket_pdf(booking_id: str):
         return Response(
             content=pdf_bytes,
             media_type="application/pdf",
-            headers={
-                "Content-Disposition": f'attachment; filename="{filename}"'
-            },
+            headers={"Content-Disposition": f'attachment; filename="{filename}"'},
         )
-    except Exception as exc:
+    except Exception:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to generate ticket PDF.",

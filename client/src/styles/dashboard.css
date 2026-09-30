@@ -1,0 +1,228 @@
+/* DASHBOARD STYLES */
+
+.dashboard-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+}
+
+.dashboard-header-card {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(70, 25, 1, 0.3), rgba(15, 23, 42, 0.95));
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: 24px;
+  padding: 2rem 2.25rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.dashboard-user-info {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.dashboard-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b, #e11d48);
+  color: #020617;
+  font-weight: 900;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3);
+}
+
+.dashboard-titles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.dashboard-role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.75rem;
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-radius: 9999px;
+  width: fit-content;
+}
+
+.dashboard-greeting {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: #fef3c7;
+}
+
+.dashboard-email {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.dashboard-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.btn-dash-action {
+  padding: 0.65rem 1.25rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.btn-dash-home {
+  background-color: #0f172a;
+  color: #cbd5e1;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.btn-dash-home:hover {
+  background-color: #1e293b;
+  color: #fef3c7;
+}
+
+.btn-dash-logout {
+  background-color: rgba(225, 29, 72, 0.15);
+  color: #fda4af;
+  border: 1px solid rgba(225, 29, 72, 0.4);
+}
+
+.btn-dash-logout:hover {
+  background-color: rgba(225, 29, 72, 0.3);
+  color: #fff;
+}
+
+.dashboard-card {
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-radius: 20px;
+  padding: 2.25rem 2rem;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(12px);
+  margin-bottom: 2rem;
+}
+
+.dashboard-card-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #fef3c7;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dashboard-role-description {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fbbf24;
+  margin-bottom: 1.25rem;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.dashboard-stat-card {
+  background-color: rgba(2, 6, 23, 0.85);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dashboard-stat-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dashboard-stat-value {
+  font-size: 1.75rem;
+  font-weight: 900;
+  color: #fef3c7;
+}
+
+.dashboard-stat-desc {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+/* Access Denied Card */
+.access-denied-container {
+  min-height: calc(100vh - 200px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.access-denied-card {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(80, 10, 10, 0.3), rgba(15, 23, 42, 0.95));
+  border: 1px solid rgba(225, 29, 72, 0.4);
+  border-radius: 24px;
+  padding: 2.5rem;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+.access-denied-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-color: rgba(225, 29, 72, 0.15);
+  color: #fda4af;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.25rem;
+}
+
+.access-denied-title {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #fda4af;
+  margin-bottom: 0.5rem;
+}
+
+.access-denied-text {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  margin-bottom: 1.75rem;
+  line-height: 1.5;
+}
+
+.access-denied-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+}

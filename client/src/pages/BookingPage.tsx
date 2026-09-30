@@ -33,12 +33,13 @@ export const BookingPage: React.FC<BookingPageProps> = ({
         title: "PAYMENT SUCCESSFUL",
         message: "Payment successful! Your tickets have been booked.",
       });
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Payment failed. Please try again.";
       onShowToast({
         id: Date.now().toString(),
         type: "error",
         title: "PAYMENT ERROR",
-        message: err.message || "Payment failed. Please try again.",
+        message,
       });
     } finally {
       setIsProcessing(false);
@@ -60,16 +61,8 @@ export const BookingPage: React.FC<BookingPageProps> = ({
             <line x1="19" y1="12" x2="5" y2="12"></line>
             <polyline points="12 19 5 12 12 5"></polyline>
           </svg>
-          <span>Back to Mahotsav Overview</span>
+          <span>Back to Event Details</span>
         </button>
-
-        <span className="booking-trust-note">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-          </svg>
-          <span>256-bit Encrypted Checkout</span>
-        </span>
       </div>
 
       {isProcessing ? (
@@ -78,6 +71,7 @@ export const BookingPage: React.FC<BookingPageProps> = ({
         <TicketConfirmation
           booking={bookingSuccessData}
           onBookMore={handleBookMore}
+          onGoHome={onGoHome}
         />
       ) : (
         <BookingForm
@@ -88,3 +82,4 @@ export const BookingPage: React.FC<BookingPageProps> = ({
     </div>
   );
 };
+

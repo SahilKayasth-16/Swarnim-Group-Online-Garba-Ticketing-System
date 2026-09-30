@@ -1,61 +1,82 @@
 import random
 import string
-from typing import Dict, Any, Optional
+from decimal import Decimal
+from typing import Any, Dict, Optional
 
-DEMO_BOOKINGS: Dict[str, Dict[str, Any]] = {}
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+
+from app.models.booking import Booking
+
+TICKET_PRICE = Decimal("200.00")
+DEFAULT_EVENT_DATE = "11 October 2026"
+EVENT_NAME = "Swarnim Group Navratri Mahotsav 2026"
+VENUE = "P.R.B Arts & P.G.R Commerce College Ground, Station Road, Bardoli, Surat"
+ALLOWED_PAYMENT_METHODS = {"online", "cash"}
 
 
-def create_demo_booking(quantity: int, event_date: str, payment_method: str) -> Dict[str, Any]:
+def _booking_to_dict(booking: Booking) -> Dict[str, Any]:
     """
-    Creates a simulated demo booking record with dynamic total calculation and booking reference.
+    Converts a Booking ORM row into the plain dict shape expected by the
+    API response schema and the PDF generator.
+    """
+    return {
+        "booking_id": booking.booking_id,
+        "event_name": EVENT_NAME,
+        "venue": booking.venue,
+        "event_date": booking.event_date,
+        "quantity": booking.quantity,
+        "ticket_price": float(booking.ticket_price),
+        "total_amount": float(booking.total_amount),
+        "payment_method": booking.payment_method,
+        "payment_status": booking.payment_status,
+    }
+
+
+def create_demo_booking(
+    db: Session, quantity: int, event_date: str, payment_method: str
+) -> Dict[str, Any]:
+    """
+    Validates input, persists a demo booking record with a dynamically
+    calculated total, and returns it as a plain dict.
     """
     if quantity < 1 or quantity > 10:
         raise ValueError("Quantity must be between 1 and 10 tickets.")
 
-    allowed_methods = ["upi", "card", "netbanking"]
-    if payment_method.lower() not in allowed_methods:
-        raise ValueError("Invalid payment method selected.")
+    if not payment_method or payment_method.strip().lower() not in ALLOWED_PAYMENT_METHODS:
+        raise ValueError("Invalid payment method selected. Allowed methods: online, cash.")
 
     random_str = "".join(random.choices(string.ascii_uppercase + string.digits, k=5))
     booking_id = f"SGNM-2026-{random_str}"
 
-    ticket_price = 200.0
-    total_amount = float(quantity * ticket_price)
+    total_amount = TICKET_PRICE * quantity
 
-    booking_data = {
-        "booking_id": booking_id,
-        "event_name": "Swarnim Group Navratri Mahotsav 2026",
-        "venue": "Swarnim Group Ground, Vesu, Surat",
-        "event_date": event_date if event_date else "11 October 2026",
-        "quantity": quantity,
-        "ticket_price": ticket_price,
-        "total_amount": total_amount,
-        "payment_method": payment_method.upper(),
-        "payment_status": "paid",
-    }
+    booking = Booking(
+        booking_id=booking_id,
+        venue=VENUE,
+        event_date=event_date or DEFAULT_EVENT_DATE,
+        quantity=quantity,
+        ticket_price=TICKET_PRICE,
+        total_amount=total_amount,
+        payment_method=payment_method.strip().upper(),
+        payment_status="paid",
+    )
 
-    DEMO_BOOKINGS[booking_id] = booking_data
-    return booking_data
+    db.add(booking)
+    db.commit()
+    db.refresh(booking)
+
+    return _booking_to_dict(booking)
 
 
-def get_demo_booking_by_id(booking_id: str) -> Optional[Dict[str, Any]]:
+def get_demo_booking_by_id(db: Session, booking_id: str) -> Optional[Dict[str, Any]]:
     """
-    Retrieves a demo booking by ID.
+    Retrieves a persisted demo booking by its booking_id.
+    Returns None if no matching booking exists.
     """
-    if booking_id in DEMO_BOOKINGS:
-        return DEMO_BOOKINGS[booking_id]
-
-    if booking_id.startswith("SGNM-2026-"):
-        return {
-            "booking_id": booking_id,
-            "event_name": "Swarnim Group Navratri Mahotsav 2026",
-            "venue": "Swarnim Group Ground, Vesu, Surat",
-            "event_date": "11 October 2026",
-            "quantity": 1,
-            "ticket_price": 200.0,
-            "total_amount": 200.0,
-            "payment_method": "UPI",
-            "payment_status": "paid",
-        }
-
-    return None
+    stmt = select(Booking).where(Booking.booking_id == booking_id)
+    booking = db.scalar(stmt)
+    if not booking:
+        return None
+    return _booking_to_dict(booking)
+    return _booking_to_dict(booking)

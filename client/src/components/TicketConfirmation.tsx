@@ -6,13 +6,19 @@ import "../styles/ticketconfirmation.css";
 interface TicketConfirmationProps {
   booking: DemoBookingData;
   onBookMore: () => void;
+  onGoHome?: () => void;
 }
 
 export const TicketConfirmation: React.FC<TicketConfirmationProps> = ({
   booking,
   onBookMore,
+  onGoHome,
 }) => {
   const pdfUrl = getDemoTicketPdfUrl(booking.booking_id);
+  const paymentMethodLabel =
+    booking.payment_method.toUpperCase() === "CASH"
+      ? "Cash Payment (Demo)"
+      : "Online Payment (Demo)";
 
   return (
     <div className="confirmation-card">
@@ -50,6 +56,11 @@ export const TicketConfirmation: React.FC<TicketConfirmationProps> = ({
         </div>
 
         <div className="pass-row">
+          <span className="pass-label">Payment Method:</span>
+          <span className="pass-val">{paymentMethodLabel}</span>
+        </div>
+
+        <div className="pass-row">
           <span className="pass-label">Venue:</span>
           <span className="pass-val" style={{ fontSize: '0.75rem', textAlign: 'right', maxWidth: '280px' }}>
             {booking.venue}
@@ -84,6 +95,16 @@ export const TicketConfirmation: React.FC<TicketConfirmationProps> = ({
         >
           Book More Tickets
         </button>
+
+        {onGoHome && (
+          <button
+            onClick={onGoHome}
+            className="btn-book-more"
+            style={{ marginTop: '0.5rem', background: 'transparent', border: '1px solid rgba(245, 158, 11, 0.3)' }}
+          >
+            Return to Home
+          </button>
+        )}
       </div>
     </div>
   );

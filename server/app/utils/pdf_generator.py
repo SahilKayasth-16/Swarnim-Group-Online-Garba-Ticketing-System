@@ -1,13 +1,13 @@
 import io
-from reportlab.lib.pagesizes import letter
 from reportlab.lib import colors
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, HRFlowable
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
+from reportlab.platypus import HRFlowable, Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
 
 
 def generate_ticket_pdf(booking: dict) -> bytes:
     """
-    Generates a PDF ticket document using ReportLab for a demo booking.
+    Generates a PDF ticket document using ReportLab for a booking.
     """
     buffer = io.BytesIO()
     doc = SimpleDocTemplate(
@@ -17,6 +17,7 @@ def generate_ticket_pdf(booking: dict) -> bytes:
         leftMargin=40,
         topMargin=40,
         bottomMargin=40,
+        pageCompression=0,
     )
 
     styles = getSampleStyleSheet()
@@ -94,11 +95,11 @@ def generate_ticket_pdf(booking: dict) -> bytes:
 
     event_name = booking.get("event_name", "Swarnim Group Navratri Mahotsav 2026")
     event_date = booking.get("event_date", "11 October 2026")
-    venue = booking.get("venue", "Swarnim Group Ground, Vesu, Surat")
+    venue = booking.get("venue", "P.R.B Arts & P.G.R Commerce College Ground, Station Road, Bardoli, Surat")
     quantity = str(booking.get("quantity", 1))
     price = f"Rs. {booking.get('ticket_price', 200.0):.2f}"
     total = f"Rs. {booking.get('total_amount', 200.0):.2f}"
-    payment_method = str(booking.get("payment_method", "UPI")).upper()
+    payment_method = str(booking.get("payment_method", "ONLINE")).upper()
     payment_status = str(booking.get("payment_status", "PAID")).upper()
 
     table_data = [
@@ -109,7 +110,7 @@ def generate_ticket_pdf(booking: dict) -> bytes:
         [Paragraph("Price per Pass:", label_style), Paragraph(price, value_style)],
         [Paragraph("Total Amount Paid:", label_style), Paragraph(f"<b>{total}</b>", value_style)],
         [Paragraph("Payment Method:", label_style), Paragraph(payment_method, value_style)],
-        [Paragraph("Payment Status:", label_style), Paragraph(f"<b>{payment_status} (DEMO)</b>", badge_style)],
+        [Paragraph("Payment Status:", label_style), Paragraph(f"<b>{payment_status}</b>", badge_style)],
     ]
 
     t = Table(table_data, colWidths=[140, 360])
@@ -139,7 +140,7 @@ def generate_ticket_pdf(booking: dict) -> bytes:
 
     elements.append(Spacer(1, 20))
 
-    footer_text = "Note: This is an official digital pass generated for Swarnim Group Navratri Mahotsav 2026 demo prototype. Present this pass at the gate upon arrival."
+    footer_text = "Note: This is an official digital pass generated for Swarnim Group Navratri Mahotsav 2026. Present this pass at the gate upon arrival."
     elements.append(Paragraph(footer_text, ParagraphStyle("Footer", parent=styles["Normal"], fontName="Helvetica-Oblique", fontSize=8, leading=11, textColor=colors.HexColor("#64748b"), alignment=1)))
 
     doc.build(elements)

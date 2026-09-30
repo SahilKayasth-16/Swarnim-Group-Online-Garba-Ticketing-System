@@ -1,3 +1,38 @@
+export type UserRole =
+  | "super_admin"
+  | "event_admin"
+  | "counter_operator"
+  | "security_staff";
+
+export interface UserPublic {
+  id: number;
+  name: string;
+  contact_number: string;
+  email: string;
+  role: UserRole;
+  is_active: boolean;
+  created_at: string;
+}
+
+export interface RegisterRequest {
+  name: string;
+  contact_number: string;
+  email: string;
+  password: string;
+  role: UserRole;
+}
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface AuthResponse {
+  access_token: string;
+  token_type: string;
+  user: UserPublic;
+}
+
 export interface TicketType {
   id: number;
   event_id: number;

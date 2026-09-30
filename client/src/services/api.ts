@@ -1,4 +1,14 @@
-import type { ApiResponse, DemoBookingData, DemoBookingRequest, Event, TicketType } from "../types";
+import type {
+  ApiResponse,
+  AuthResponse,
+  DemoBookingData,
+  DemoBookingRequest,
+  Event,
+  LoginRequest,
+  RegisterRequest,
+  TicketType,
+  UserPublic,
+} from "../types";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
 
@@ -68,3 +78,65 @@ export async function createDemoBooking(payload: DemoBookingRequest): Promise<De
 export function getDemoTicketPdfUrl(bookingId: string): string {
   return `${API_BASE_URL}/bookings/demo/${bookingId}/ticket.pdf`;
 }
+
+export async function registerUser(payload: RegisterRequest): Promise<AuthResponse> {
+  const response = await fetch(`${API_BASE_URL}/auth/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.detail || "Registration failed. Please check your details.");
+  }
+
+  const result: ApiResponse<AuthResponse> = await response.json();
+  if (!result.success) {
+    throw new Error(result.message || "Registration failed.");
+  }
+  return result.data;
+}
+
+export async function loginUser(payload: LoginRequest): Promise<AuthResponse> {
+  const response = await fetch(`${API_BASE_URL}/auth/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.detail || "Invalid email or password.");
+  }
+
+  const result: ApiResponse<AuthResponse> = await response.json();
+  if (!result.success) {
+    throw new Error(result.message || "Login failed.");
+  }
+  return result.data;
+}
+
+export async function getCurrentUser(token: string): Promise<UserPublic> {
+  const response = await fetch(`${API_BASE_URL}/auth/me`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.detail || "Session expired or invalid.");
+  }
+
+  const result: ApiResponse<UserPublic> = await response.json();
+  if (!result.success) {
+    throw new Error(result.message || "Failed to load user profile.");
+  }
+  return result.data;
+}
+

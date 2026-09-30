@@ -1,1 +1,0 @@
-# Module placeholder: tickets.py

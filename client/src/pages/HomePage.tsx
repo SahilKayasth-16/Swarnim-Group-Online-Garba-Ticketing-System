@@ -59,8 +59,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onGoToBooking }) => {
               </svg>
             </div>
             <div className="event-detail-content">
-              <span className="event-detail-label">Event Starting Date</span>
-              <span className="event-detail-value">11 October 2026</span>
+              <span className="event-detail-label">Event Date</span>
+              <span className="event-detail-value">11th October 2026 to 20th October 2026</span>
             </div>
           </div>
 
