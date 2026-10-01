@@ -21,14 +21,23 @@ export const SecurityDashboard: React.FC = () => {
         <div className="dashboard-grid">
           <div className="dashboard-stat-card">
             <span className="dashboard-stat-label">Main Gate Status</span>
-            <span className="dashboard-stat-value" style={{ color: '#10b981' }}>Clear</span>
-            <span className="dashboard-stat-desc">Station Road Main Entrance</span>
+            <span className="dashboard-stat-value">Configured</span>
+            <span className="dashboard-stat-desc">
+              Station Road Main Entrance
+            </span>
           </div>
 
           <div className="dashboard-stat-card">
             <span className="dashboard-stat-label">Pass Validation</span>
-            <span className="dashboard-stat-value" style={{ fontSize: '1.25rem' }}>PDF & QR Ready</span>
-            <span className="dashboard-stat-desc">Digital & Printed passes verified</span>
+            <span
+              className="dashboard-stat-value"
+              style={{ fontSize: "1.25rem" }}
+            >
+              Validation Module
+            </span>
+            <span className="dashboard-stat-desc">
+              QR verification will be connected to ticket records
+            </span>
           </div>
 
           <div className="dashboard-stat-card">
@@ -38,9 +47,16 @@ export const SecurityDashboard: React.FC = () => {
           </div>
 
           <div className="dashboard-stat-card">
-            <span className="dashboard-stat-label">Checkpoint Security</span>
-            <span className="dashboard-stat-value" style={{ color: '#fbbf24' }}>Staff On-Duty</span>
-            <span className="dashboard-stat-desc">Surat District Arena Guidelines</span>
+            <span className="dashboard-stat-label">Pass Validation</span>
+            <span
+              className="dashboard-stat-value"
+              style={{ fontSize: "1.25rem" }}
+            >
+              Validation Module
+            </span>
+            <span className="dashboard-stat-desc">
+              QR verification will be connected to ticket records
+            </span>
           </div>
         </div>
       </div>

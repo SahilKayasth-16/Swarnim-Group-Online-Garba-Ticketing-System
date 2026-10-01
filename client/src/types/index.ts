@@ -58,16 +58,8 @@ export interface Event {
   ticket_types?: TicketType[];
 }
 
-export interface DemoBookingRequest {
-  quantity: number;
-  event_date: string;
-  payment_method: string;
-  event_id?: number;
-}
-
-export interface DemoBookingData {
+export interface BookingData {
   booking_id: string;
-  event_name: string;
   venue: string;
   event_date: string;
   quantity: number;

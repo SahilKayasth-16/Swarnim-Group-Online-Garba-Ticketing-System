@@ -21,14 +21,16 @@ export const SuperAdminDashboard: React.FC = () => {
         <div className="dashboard-grid">
           <div className="dashboard-stat-card">
             <span className="dashboard-stat-label">Event Status</span>
-            <span className="dashboard-stat-value" style={{ color: '#10b981' }}>Live</span>
+            <span className="dashboard-stat-value">Configured</span>
             <span className="dashboard-stat-desc">11 – 20 October 2026</span>
           </div>
 
           <div className="dashboard-stat-card">
-            <span className="dashboard-stat-label">Ticket Base Price</span>
-            <span className="dashboard-stat-value">₹200</span>
-            <span className="dashboard-stat-desc">Standard Pass Category</span>
+            <span className="dashboard-stat-label">Ticket Pricing</span>
+            <span className="dashboard-stat-value">Database Driven</span>
+            <span className="dashboard-stat-desc">
+              Pricing is managed through the ticketing system
+            </span>
           </div>
 
           <div className="dashboard-stat-card">

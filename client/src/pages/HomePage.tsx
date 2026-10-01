@@ -21,7 +21,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onGoToBooking }) => {
           </h1>
 
           <p className="hero-subtitle">
-            Experience the most celebrated 9-night Garba and Dandiya festival. Traditional beats, vibrant colors, and unforgettable cultural celebration.
+            ગરબા અને દાંડિયાના સૌથી લોકપ્રિય નવરાત્રિના ઉત્સવનો અનુભવ કરો. પરંપરાગત તાલ, આકર્ષક રંગો અને અવિસ્મરણીય સાંસ્કૃતિક ઉત્સવ.
           </p>
         </div>
       </section>

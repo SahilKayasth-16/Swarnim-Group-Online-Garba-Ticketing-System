@@ -30,8 +30,10 @@ export const EventAdminDashboard: React.FC = () => {
 
           <div className="dashboard-stat-card">
             <span className="dashboard-stat-label">Daily Capacity</span>
-            <span className="dashboard-stat-value">5,000</span>
-            <span className="dashboard-stat-desc">Ground capacity per evening</span>
+            <span className="dashboard-stat-value">Database Driven</span>
+            <span className="dashboard-stat-desc">
+              Capacity is managed through event configuration
+            </span>
           </div>
 
           <div className="dashboard-stat-card">
@@ -42,8 +44,10 @@ export const EventAdminDashboard: React.FC = () => {
 
           <div className="dashboard-stat-card">
             <span className="dashboard-stat-label">Booking Flow</span>
-            <span className="dashboard-stat-value" style={{ color: '#10b981' }}>Enabled</span>
-            <span className="dashboard-stat-desc">Online & Cash Reservations</span>
+            <span className="dashboard-stat-value">Configured</span>
+            <span className="dashboard-stat-desc">
+              Online & Cash Reservations
+            </span>
           </div>
         </div>
       </div>

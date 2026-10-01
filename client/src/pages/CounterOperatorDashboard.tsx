@@ -37,20 +37,31 @@ export const CounterOperatorDashboard: React.FC = () => {
 
           <div className="dashboard-stat-card">
             <span className="dashboard-stat-label">Accepted Modes</span>
-            <span className="dashboard-stat-value" style={{ fontSize: '1.25rem' }}>Cash & Online</span>
-            <span className="dashboard-stat-desc">Direct demo booking clearance</span>
+            <span
+              className="dashboard-stat-value"
+              style={{ fontSize: "1.25rem" }}
+            >
+              Cash & Online
+            </span>
+            <span className="dashboard-stat-desc">
+              Available booking payment methods
+            </span>
           </div>
 
           <div className="dashboard-stat-card">
-            <span className="dashboard-stat-label">Ticket Rate</span>
-            <span className="dashboard-stat-value">₹200 / pass</span>
-            <span className="dashboard-stat-desc">Up to 10 tickets per order</span>
+            <span className="dashboard-stat-label">Ticket Pricing</span>
+            <span className="dashboard-stat-value">Database Driven</span>
+            <span className="dashboard-stat-desc">
+              Price and booking limits are managed by the ticketing system
+            </span>
           </div>
 
           <div className="dashboard-stat-card">
             <span className="dashboard-stat-label">Desk Status</span>
-            <span className="dashboard-stat-value" style={{ color: '#10b981' }}>Active</span>
-            <span className="dashboard-stat-desc">Counter Station 1 Ready</span>
+            <span className="dashboard-stat-value">Configured</span>
+            <span className="dashboard-stat-desc">
+              Counter operator access is configured
+            </span>
           </div>
         </div>
       </div>
