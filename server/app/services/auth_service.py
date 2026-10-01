@@ -110,3 +110,10 @@ def get_user_by_id(db: Session, user_id: int) -> Optional[User]:
     Fetches a user by their database primary key.
     """
     return db.scalar(select(User).where(User.id == user_id))
+
+
+def get_super_admin(db: Session) -> Optional[User]:
+    """
+    Fetches the registered Super Admin if one exists.
+    """
+    return db.scalar(select(User).where(User.role == "super_admin"))

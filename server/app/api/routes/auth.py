@@ -6,9 +6,41 @@ from app.core.dependencies import get_current_user, get_db
 from app.models.user import User
 from app.schemas.auth import AuthResponse, LoginRequest, RegisterRequest
 from app.schemas.user import UserResponse
-from app.services.auth_service import authenticate_user, register_user
+from app.services.auth_service import authenticate_user, get_super_admin, register_user
 
 router = APIRouter()
+
+
+@router.get(
+    "/super-admin",
+    response_model=Dict[str, Any],
+    status_code=status.HTTP_200_OK,
+    summary="Check if a Super Admin is already registered",
+)
+def get_super_admin_status(db: Session = Depends(get_db)):
+    """
+    Returns the status and name of the registered Super Admin if one exists.
+    """
+    super_admin = get_super_admin(db)
+    if super_admin:
+        return {
+            "success": True,
+            "message": "Super Admin already exists.",
+            "data": {
+                "exists": True,
+                "name": super_admin.name,
+                "message": f"{super_admin.name} is the Super Admin only. Kindly register as another role.",
+            },
+        }
+    return {
+        "success": True,
+        "message": "No Super Admin registered yet.",
+        "data": {
+            "exists": False,
+            "name": None,
+            "message": None,
+        },
+    }
 
 
 @router.post(
@@ -82,3 +114,4 @@ def get_me(current_user: User = Depends(get_current_user)):
         "message": "User profile retrieved successfully.",
         "data": UserResponse.model_validate(current_user).model_dump(),
     }
+

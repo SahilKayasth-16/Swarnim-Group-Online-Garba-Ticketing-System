@@ -16,16 +16,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [token, setToken] = useState<string | null>(() =>
-    localStorage.getItem(AUTH_TOKEN_KEY)
+    sessionStorage.getItem(AUTH_TOKEN_KEY)
   );
   const [user, setUser] = useState<UserPublic | null>(null);
   const [loading, setLoading] = useState<boolean>(() =>
-    Boolean(localStorage.getItem(AUTH_TOKEN_KEY))
+    Boolean(sessionStorage.getItem(AUTH_TOKEN_KEY))
   );
 
   useEffect(() => {
     let isMounted = true;
-    const storedToken = localStorage.getItem(AUTH_TOKEN_KEY);
+    const storedToken = sessionStorage.getItem(AUTH_TOKEN_KEY);
 
     if (storedToken) {
       getCurrentUser(storedToken)
@@ -38,7 +38,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         })
         .catch(() => {
           if (isMounted) {
-            localStorage.removeItem(AUTH_TOKEN_KEY);
+            sessionStorage.removeItem(AUTH_TOKEN_KEY);
             setToken(null);
             setUser(null);
             setLoading(false);
@@ -55,7 +55,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setLoading(true);
     try {
       const response = await loginUser(credentials);
-      localStorage.setItem(AUTH_TOKEN_KEY, response.access_token);
+      sessionStorage.setItem(AUTH_TOKEN_KEY, response.access_token);
       setToken(response.access_token);
       setUser(response.user);
       return response;
@@ -68,7 +68,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setLoading(true);
     try {
       const response = await registerUser(payload);
-      localStorage.setItem(AUTH_TOKEN_KEY, response.access_token);
+      sessionStorage.setItem(AUTH_TOKEN_KEY, response.access_token);
       setToken(response.access_token);
       setUser(response.user);
       return response;
@@ -78,7 +78,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   const logout = useCallback(() => {
-    localStorage.removeItem(AUTH_TOKEN_KEY);
+    sessionStorage.removeItem(AUTH_TOKEN_KEY);
     setToken(null);
     setUser(null);
   }, []);
