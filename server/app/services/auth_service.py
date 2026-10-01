@@ -7,24 +7,39 @@ from app.core.security import hash_password, verify_password, create_access_toke
 from app.models.user import User
 from app.schemas.auth import RegisterRequest, LoginRequest
 
-
 def register_user(db: Session, request: RegisterRequest) -> Dict[str, Any]:
     """
     Registers a new user, hashes password, saves to database, and issues an access token.
     """
     email_clean = request.email.strip().lower()
     contact_clean = request.contact_number.strip()
+    role_clean = request.role.strip().lower()
 
-    # Check if user already exists by email or contact number
+    #if user already exists by email or contact number
     existing = db.scalar(
         select(User).where(
-            or_(User.email == email_clean, User.contact_number == contact_clean)
+            or_(User.email == email_clean, 
+                User.contact_number == contact_clean)
         )
     )
+
     if existing:
         if existing.email == email_clean:
             raise ValueError("An account with this email already exists.")
+        
         raise ValueError("An account with this contact number already exists.")
+
+    # Only one Super Admin is allowed
+    if role_clean == "super_admin":
+        existing_super_admin = db.scalar(
+            select(User).where(User.role == "super_admin")
+        )
+
+        if existing_super_admin:
+            raise ValueError(
+                f"{existing_super_admin.name} is the Super Admin only. "
+                "Kindly register as another role."
+            )
 
     password_hash = hash_password(request.password)
 
@@ -33,7 +48,7 @@ def register_user(db: Session, request: RegisterRequest) -> Dict[str, Any]:
         contact_number=contact_clean,
         email=email_clean,
         password_hash=password_hash,
-        role=request.role.strip().lower(),
+        role=role_clean,
         is_active=True,
     )
 
@@ -43,13 +58,15 @@ def register_user(db: Session, request: RegisterRequest) -> Dict[str, Any]:
         db.refresh(user)
     except IntegrityError:
         db.rollback()
-        raise ValueError("An account with this email or contact number already exists.")
+        raise ValueError("Unable to register user. Please try again.")
 
+    # Create JWT access token
     token_payload = {
         "sub": str(user.id),
         "email": user.email,
         "role": user.role,
     }
+
     access_token = create_access_token(token_payload)
 
     return {
@@ -57,7 +74,6 @@ def register_user(db: Session, request: RegisterRequest) -> Dict[str, Any]:
         "token_type": "bearer",
         "user": user,
     }
-
 
 def authenticate_user(db: Session, request: LoginRequest) -> Dict[str, Any]:
     """

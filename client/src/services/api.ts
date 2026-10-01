@@ -12,6 +12,12 @@ import type {
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
 
+export interface SuperAdminStatus {
+  exists: boolean;
+  name: string | null;
+  message: string | null;
+}
+
 export async function getEvents(): Promise<Event[]> {
   const response = await fetch(`${API_BASE_URL}/events`);
   if (!response.ok) {
@@ -140,3 +146,15 @@ export async function getCurrentUser(token: string): Promise<UserPublic> {
   return result.data;
 }
 
+export async function getSuperAdminStatus(): Promise<SuperAdminStatus> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/auth/super-admin`);
+    if (!response.ok) {
+      return { exists: false, name: null, message: null };
+    }
+    const result: ApiResponse<SuperAdminStatus> = await response.json();
+    return result.data;
+  } catch {
+    return { exists: false, name: null, message: null };
+  }
+}
